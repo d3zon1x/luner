@@ -7,6 +7,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+import java.time.LocalDateTime;
 import java.util.Calendar;
 
 @SpringBootApplication
@@ -23,7 +24,7 @@ public class Main {
             category.setName("Одяг");
             category.setImage("1.jpg");
             category.setDescription("Для дорослих людей");
-            category.setDateCreated(calendar.getTime());
+            category.setCreationTime(LocalDateTime.now());
             repository.save(category);
         };
     }
