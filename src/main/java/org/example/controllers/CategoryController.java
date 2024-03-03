@@ -1,9 +1,10 @@
 package org.example.controllers;
 
 import lombok.AllArgsConstructor;
-import org.example.dto.CategoryCreateDTO;
-import org.example.dto.CategoryEditDTO;
-import org.example.dto.CategoryDTO;
+import org.example.dto.category.CategoryCreateDTO;
+import org.example.dto.category.CategoryEditDTO;
+import org.example.dto.category.CategoryDTO;
+import org.example.dto.common.SelectItemDTO;
 import org.example.mapper.CategoryMapper;
 import org.example.repositories.CategoryRepository;
 import org.example.services.CategoryService;
@@ -108,5 +109,10 @@ public class CategoryController {
                                                               Pageable pageable) {
         Page<CategoryDTO> categories = categoryService.searchByName(name, pageable);
         return new ResponseEntity<>(categories, HttpStatus.OK);
+    }
+    @GetMapping("/selectList")
+    public ResponseEntity<List<SelectItemDTO>> selectList() {
+        var list = categoryService.getSelectList();
+        return new ResponseEntity<>(list, HttpStatus.OK);
     }
 }
