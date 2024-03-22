@@ -3,6 +3,7 @@ package org.example.controllers;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.example.dto.product.ProductCreateDTO;
+import org.example.dto.product.ProductEditDTO;
 import org.example.dto.product.ProductItemDTO;
 import org.example.dto.product.ProductSearchResultDTO;
 import org.example.services.ProductService;
@@ -31,14 +32,29 @@ public class ProductController {
 
     @GetMapping("/search")
     public ResponseEntity<ProductSearchResultDTO> searchProducts(
-            @RequestParam (defaultValue = "")String keywordName,
-            @RequestParam (defaultValue = "")String keywordCategory,
-            @RequestParam (defaultValue = "")String keywordDescription,
+            @RequestParam (defaultValue = "")String name,
+            @RequestParam (defaultValue = "0")int categoryId,
+            @RequestParam (defaultValue = "")String description,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size) {
-        ProductSearchResultDTO searchResult = productService.searchProducts(keywordName, keywordCategory,
-                keywordDescription, page, size);
+        ProductSearchResultDTO searchResult = productService.searchProducts(name, categoryId,
+                description, page, size);
 
         return new ResponseEntity<>(searchResult, HttpStatus.OK);
+    }
+
+    @GetMapping("/{productId}")
+    public ResponseEntity<ProductItemDTO> getById(@PathVariable int productId) {
+        var result = productService.getById(productId);
+        if (result == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @PutMapping
+    public ResponseEntity<ProductItemDTO> edit(@RequestBody ProductEditDTO model) {
+        var result = productService.edit(model);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 }

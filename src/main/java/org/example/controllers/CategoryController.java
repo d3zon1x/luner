@@ -1,3 +1,4 @@
+
 package org.example.controllers;
 
 import lombok.AllArgsConstructor;
@@ -10,14 +11,13 @@ import org.example.repositories.CategoryRepository;
 import org.example.services.CategoryService;
 import org.example.storage.FileSaveFormat;
 import org.example.storage.StorageService;
-
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import org.springframework.data.domain.Pageable;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -53,6 +53,7 @@ public class CategoryController {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
+
     @PutMapping(value="", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<CategoryDTO> edit(@ModelAttribute CategoryEditDTO model) {
         var old = categoryRepository.findById(model.getId()).orElse(null);
@@ -104,12 +105,14 @@ public class CategoryController {
         var result =  categoryMapper.categoryItemDTO(entity);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
+
     @GetMapping("/search")
     public ResponseEntity<Page<CategoryDTO>> searchByName(@RequestParam(required = false) String name,
                                                               Pageable pageable) {
         Page<CategoryDTO> categories = categoryService.searchByName(name, pageable);
         return new ResponseEntity<>(categories, HttpStatus.OK);
     }
+
     @GetMapping("/selectList")
     public ResponseEntity<List<SelectItemDTO>> selectList() {
         var list = categoryService.getSelectList();

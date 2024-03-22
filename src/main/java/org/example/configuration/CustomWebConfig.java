@@ -1,3 +1,4 @@
+
 package org.example.configuration;
 
 import lombok.AllArgsConstructor;
